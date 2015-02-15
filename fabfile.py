@@ -12,3 +12,8 @@ def setup(user):
         sudo('adduser %s sudo' % user)
         sudo('service sudo restart')
         sudo('echo "%s ALL=(ALL) NOPASSWD:ALL" | tee -a /etc/sudoers' % user)
+    if not exists('/home/%s/.ssh' % user):
+        sudo('mkdir -p /home/%s/.ssh' % user)
+        sudo('cp /root/.ssh/authorized_keys /home/%s/.ssh/' % user)
+        sudo('chown -R %s /home/%s/.ssh' % (user, user))
+        sudo('chgrp -R %s /home/%s/.ssh' % (user, user))
